@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Possible choices of beer color displayed in array-->
+    <string-array name="beer_color">
+        <item>@string/color_unknown</item>
+        <item>@string/color_yellow</item>
+        <item>@string/color_amber</item>
+        <item>@string/color_brown</item>
+        <item>@string/color_black</item>
+    </string-array>
+
+    <!--Possible choices of beer type displayed in array-->
+    <string-array name="array_beer_types">
+        <item>@string/beer_type_unknown</item>
+        <item>@string/beer_type_ale</item>
+        <item>@string/beer_type_pale_ale</item>
+        <item>@string/beer_type_lager</item>
+        <item>@string/beer_type_Stout</item>
+        <item>@string/beer_type_indianpale_ale</item>
+        <item>@string/beer_type_porter</item>
+    </string-array>
+
+</resources>

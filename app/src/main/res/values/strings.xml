@@ -1,0 +1,100 @@
+<resources>
+    <string name="app_name">Inventory App</string>
+    <string name="String_home">Home</string>
+    <string name="action_save_recipes">Action Save</string>
+    <string name="delete_recipe">Delete Recipe</string>
+
+    <!--Displays text for the possible beer colors-->
+    <string name="color_unknown">Unknown</string>
+    <string name="color_yellow">Yellow</string>
+    <string name="color_amber">Amber</string>
+    <string name="color_brown">Brown</string>
+    <string name="color_black">Black</string>
+
+    <!--Displays text for the possible beer types-->
+    <string name="beer_type_unknown">Unknown</string>
+    <string name="beer_type_ale">Ale</string>
+    <string name="beer_type_pale_ale">Pale Ale</string>
+    <string name="beer_type_lager">Lager</string>
+    <string name="beer_type_Stout">Stout</string>
+    <string name="beer_type_indianpale_ale">Indian Pale Ale</string>
+    <string name="beer_type_porter">Porter</string>
+
+    <!--Displays text for floating button reading "Add Product" -->
+    <string name="floating_button_recipe">Add Product</string>
+
+    <!--Displays empty title text to user when no items populate ListView-->
+    <string name="empty_title_text">Let\'s fill up that beer!</string>
+
+    <!--Displays empty subtitle to user explaining how to get started when ListView is empty-->
+    <string name="empty_subtitle_text">Start by adding some beer to your inventory...</string>
+
+    <!--Displays app bar title to "Add a Product" when user is making new inventory entry-->
+    <string name="app_bar_title_add_product">Add a Product</string>
+
+    <!--Displays app bar title to "Edit Product" when user is updating existing entry-->
+    <string name="app_bar_edit_product">Edit a Product</string>
+
+    <!--Displays failed to insert product message to user when product failed to be saved-->
+    <string name="failed_to_insert">Sorry, failed to insert beer product</string>
+
+    <!--Displays successful insert message to user when product is saved-->
+    <string name="successful_insert">Product Saved!</string>
+
+    <!--Displays error message to user when an error occurs while updating an existing entry-->
+    <string name="error_occured_updating">Sorry! An error occurred while updating inventory</string>
+
+    <!--Displays message to user when updating existing entry is successful-->
+    <string name="successful_update">Product has been updated</string>
+
+    <!--Displays message to user when trying to back out in the middle
+     of updating an existing entry-->
+    <string name="discard_changes">Discard changes and quit editing?</string>
+
+    <!--Displays "Discard" menu option for the user to confirm or deny when exiting mid update-->
+    <string name="discard_option">Discard</string>
+
+    <!--Displays "Continue Editing" for the user to confirm or deny when exiting mid update-->
+    <string name="continuing_edit_option">Continue Editing</string>
+
+    <!--Displays message to user to confirm or deny prior to deleting entry entirely-->
+    <string name="are_you_sure_delete_message">Are you sure you would like to delete this product?
+    </string>
+
+    <!--Displays the "Delete" option for the user to confirm or deny prior to deleting entry-->
+    <string name="delete_option">Delete</string>
+
+    <!--Displays the "Cancel" option for the user to confirm or deny prior to deleting entry-->
+    <string name="cancel_delete_option">Cancel</string>
+
+    <!--Displays Toast message to user when an error occurs with deleting a product entry-->
+    <string name="error_deleting_product">Error with deleting product</string>
+
+    <!--Displays Toast message to the user when product was successfully deleted
+    within the inventory-->
+    <string name="product_deleted_toast">Product Deleted</string>
+
+    <!--Displays the splash screen title-->
+    <string name="dreadnaught_brewing_splash_title">Dreadnaught Brewing</string>
+
+    <!--Displays the "Overview" input field-->
+    <string name="overview_field_title">Overview</string>
+
+    <!--Displays hint to the user when prompting for the product name-->
+    <string name="name_of_beer_editText_hint">Name of Beer Product</string>
+
+    <!--Displays the "Color" input field title-->
+    <string name="product_color_field_title">Product Color</string>
+    <string name="abv_alcohol_by_volume_field_title">ABV : (Alcohol By Volume)</string>
+    <string name="volume_edit_text_hint">Volume %</string>
+    <string name="type_of_beer_field_title">Type of Beer</string>
+    <string name="price_per_gallon_field_title">Price Per Gallon</string>
+    <string name="_0_00_edit_text_hint">$ 0.00</string>
+    <string name="available_quantity_field_title">Available Quantity</string>
+    <string name="_0_00_quantity_edit_text_hint">0.00</string>
+    <string name="product_description_field_title">Product Description:</string>
+    <string name="product_description_here_edit_text_hint">Please enter your product
+        description here....</string>
+
+    //TODO: FINISH DESCRIBING STRING RESOURCES.
+</resources>

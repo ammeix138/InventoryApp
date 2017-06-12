@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.ammei.inventory">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/dread_icon"
+        android:label="Dreadnaught BrewTrack"
+        android:supportsRtl="true"
+        android:theme="@style/InventoryAppTheme">
+        <activity android:name="com.example.ammei.inventory.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.example.ammei.inventory.Inventory_Editor"
+            android:parentActivityName="com.example.ammei.inventory.Inventory_Activity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.ammei.inventory.Inventory_Activity" />
+        </activity>
+        <activity
+            android:label="Home"
+            android:name="com.example.ammei.inventory.Inventory_Activity">
+        </activity>
+        <provider
+            android:authorities="com.example.ammei.inventory"
+            android:grantUriPermissions="true"
+            android:name=".Data.InventoryProvider"
+            android:exported="false"/>
+    </application>
+
+</manifest>
