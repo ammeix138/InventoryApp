@@ -46,6 +46,7 @@ public class InventoryCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, final Context context, final Cursor cursor) {
         mSold = (Button) view.findViewById(R.id.soldButton);
+        mRestock = (Button) view.findViewById(R.id.restockButton);
 
         TextView nameView = (TextView) view.findViewById(R.id.productName);
         TextView priceView = (TextView) view.findViewById(R.id.productPrice);
@@ -68,6 +69,26 @@ public class InventoryCursorAdapter extends CursorAdapter {
         quantityView.setText(Integer.toString(productQuantity) + "  gallons");
         summaryView.setText(productDescription);
 
+        mRestock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                long rowId = Long.valueOf(quantityView.getTag().toString());
+                String filter = "_ID=" + rowId;
+                int currentQuantity = Integer.valueOf(quantityView.getText().toString());
+                if (currentQuantity > 0){
+                    mDbHelper = new InventoryDbHelper(context);
+                    SQLiteDatabase database = mDbHelper.getWritableDatabase();
+                    int restockNewQuantity = currentQuantity + 1;
+
+                    ContentValues newRestockValue= new ContentValues();
+                    newRestockValue.put(InventoryEntry.COLUMN_QUANTITY, restockNewQuantity);
+                    database.update(InventoryEntry.TABLE_NAME, newRestockValue, filter, null);
+                    quantityView.setText(String.valueOf(restockNewQuantity));
+                    database.close();
+                }
+            }
+        });
+
         mSold.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,9 +100,9 @@ public class InventoryCursorAdapter extends CursorAdapter {
                     SQLiteDatabase database = mDbHelper.getWritableDatabase();
                     int saleNewQuantity = saleCurrentQuantity - 1;
 
-                    ContentValues newValues = new ContentValues();
-                    newValues.put(InventoryEntry.COLUMN_QUANTITY, saleNewQuantity);
-                    database.update(InventoryEntry.TABLE_NAME, newValues, filter, null);
+                    ContentValues newSaleValues = new ContentValues();
+                    newSaleValues.put(InventoryEntry.COLUMN_QUANTITY, saleNewQuantity);
+                    database.update(InventoryEntry.TABLE_NAME, newSaleValues, filter, null);
                     quantityView.setText(String.valueOf(saleNewQuantity));
                     database.close();
 
