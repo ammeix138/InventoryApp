@@ -4,6 +4,7 @@
     android:id="@+id/activity_catalog"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#000000"
     tools:context="com.example.ammei.inventory.Inventory_Activity">
 
     <ImageView
@@ -19,7 +20,10 @@
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:headerDividersEnabled="true"
+        android:footerDividersEnabled="true"
+        android:dividerHeight="4dp" />
 
     <RelativeLayout
         android:id="@+id/emptyView"

@@ -14,6 +14,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -22,6 +23,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -32,10 +35,17 @@ import static com.example.ammei.inventory.Data.InventoryContract.InventoryEntry;
 public class Inventory_Editor extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    private static final String LOG_TAG = InventoryEntry.class.getSimpleName();
+
+    private static final int PICK_IMAGE_REQUEST = 0;
+    private static final int MAIL_REQUEST = 1;
+
     /**
      * Intent to send order/restock request to a supplier
      */
     Intent emailSupplierIntent;
+
+    private Cursor mCursor;
 
     /**
      * Identifier for the inventory data loader
@@ -46,6 +56,8 @@ public class Inventory_Editor extends AppCompatActivity
      * Content URI for the existing inventory
      */
     private Uri mCurrentProductUri;
+
+    private ImageView mImageView;
 
     /**
      * EditText field to enter Beer Name
@@ -99,6 +111,8 @@ public class Inventory_Editor extends AppCompatActivity
 
     Button restockButton;
     Button soldButton;
+    ImageButton mImageButton;
+    Button mOrderButton;
 
     InventoryDbHelper mDbHelper;
 
@@ -131,6 +145,8 @@ public class Inventory_Editor extends AppCompatActivity
         Intent intent = getIntent();
         mCurrentProductUri = intent.getData();
 
+        itemId = getIntent().getLongExtra("item_id", 0);
+
         // If the Intent does not contain a product content URI, then we know that we are
         // creating a new inventory entry or editing an existing product.
         if (mCurrentProductUri == null) {
@@ -161,6 +177,8 @@ public class Inventory_Editor extends AppCompatActivity
 
         restockButton = (Button) findViewById(R.id.restockButton);
         soldButton = (Button) findViewById(R.id.soldButton);
+        mOrderButton = (Button) findViewById(R.id.orderButton);
+        mImageButton = (ImageButton) findViewById(R.id.product_imageButton);
 
         // OnTouchListeners set up for all input fields within the inventory editor activity.
         // So we can determine if the user clicked on or has modified them.
@@ -174,6 +192,28 @@ public class Inventory_Editor extends AppCompatActivity
 
         setupSpinnerColor();
         setUpSpinnerType();
+
+        mOrderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                emailSupplierIntent = new Intent(Intent.ACTION_SENDTO);
+                //Only email apps should handle this.
+                emailSupplierIntent.setData(Uri.parse("mailto:"));
+                emailSupplierIntent.setType("plain/text");
+                emailSupplierIntent.putExtra(Intent.EXTRA_EMAIL, new String[]
+                        {getString(R.string.supplier_email)});
+                emailSupplierIntent.putExtra(Intent.EXTRA_SUBJECT,
+                        getString(R.string.email_subject_line));
+                emailSupplierIntent.putExtra(Intent.EXTRA_TEXT, "Place Order For: " + mNameOfBeer +
+                        "Dreadnaught Current Stock: " + mQuantityOfBeer);
+                if (emailSupplierIntent.resolveActivity(getPackageManager()) != null){
+                    startActivity(emailSupplierIntent);
+                }
+
+                Log.e(LOG_TAG, "Order button click successful");
+            }
+        });
 
     }
 
@@ -390,14 +430,13 @@ public class Inventory_Editor extends AppCompatActivity
             case R.id.soldButton:
                 decrementQuantity((int) itemId);
                 int currentQuantity = Integer.parseInt(mQuantityOfBeer.getText().toString());
-                if (currentQuantity > 0) {
+                if (currentQuantity >= 1) {
                     decrementQuantity((int) itemId);
                 }
                 // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
                 // Pop-up confirmation dialog for deletion.
-                showDeleteConfirmationDialog();
-                deleteProduct();
+                showDeleteConfirmationDialog(itemId);
                 return true;
 
             // Respond to a click on the "Up" arrow button in the app bar
@@ -427,6 +466,10 @@ public class Inventory_Editor extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+
+    //TODO: FIGURE OUT WHY SUBMITTING ORDER BUTTON IS NOT WORKING!!
+    //TODO: IMPLEMENT THE IMAGE DATA STORAGE WITHIN THE APP, WILL NEED TO ALTER INVENTORY TABLE
+    //TODO: WITHIN THE DATABASE ON SQLITE3.
 
     /**
      * Method is called when the back button is pressed.
@@ -497,6 +540,7 @@ public class Inventory_Editor extends AppCompatActivity
             int priceColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_PRICE);
             int quantityColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_QUANTITY);
             int descriptionColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_DESCRIPTION);
+
 
             // Extract out the value from the Cursor for the given column index.
             String beerName = cursor.getString(nameColumnIndex);
@@ -601,8 +645,9 @@ public class Inventory_Editor extends AppCompatActivity
 
     /**
      * Prompt the user to confirm that they would like to delete this product entry.
+     * @param itemId
      */
-    private void showDeleteConfirmationDialog() {
+    private void showDeleteConfirmationDialog(long itemId) {
         // Create an AlertDialog.Builder and set the message, and click listeners
         // for the positive and negative button on the dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -694,4 +739,5 @@ public class Inventory_Editor extends AppCompatActivity
         database.close();
         saveProduct();
     }
+
 }

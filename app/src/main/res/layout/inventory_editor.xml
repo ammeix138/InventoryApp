@@ -187,5 +187,26 @@
                 android:textStyle="italic" />
 
         </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/product_imageButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_done"
+            android:textAlignment="center"
+            android:layout_marginTop="4dp" />
+
+        <Button
+            android:id="@+id/orderButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#a2ff720e"
+            android:focusable="false"
+            android:gravity="center"
+            android:text="Submit Order"
+            android:textColor="#ffffff"
+            android:layout_gravity="center"
+            android:padding="8dp"/>
+
     </LinearLayout>
 </ScrollView>

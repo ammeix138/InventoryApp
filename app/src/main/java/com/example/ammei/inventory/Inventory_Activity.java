@@ -90,7 +90,6 @@ public class Inventory_Activity extends AppCompatActivity
         values.put(InventoryEntry.COLUMN_PRICE, 15);
         values.put(InventoryEntry.COLUMN_QUANTITY, 8);
         values.put(InventoryEntry.COLUMN_TYPE_BEER, InventoryEntry.BT_UNKNOWN);
-        values.put(InventoryEntry.COLUMN_DESCRIPTION, "This is my product...");
 
         // Insert a new row for every Beer entry into the provider using the ContentResolver.
         Uri newUri = getContentResolver().insert(InventoryEntry.CONTENT_URI, values);

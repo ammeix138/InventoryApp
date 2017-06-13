@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,8 @@ public class InventoryCursorAdapter extends CursorAdapter {
 
     Button mSold;
 
+    private Cursor mCursor;
+
     InventoryCursorAdapter cursorAdapter;
 
     private static final String LOG_TAG = InventoryEntry.class.getSimpleName();
@@ -48,6 +51,7 @@ public class InventoryCursorAdapter extends CursorAdapter {
         mSold = (Button) view.findViewById(R.id.soldButton);
         mRestock = (Button) view.findViewById(R.id.restockButton);
 
+
         TextView nameView = (TextView) view.findViewById(R.id.productName);
         TextView priceView = (TextView) view.findViewById(R.id.productPrice);
         final TextView quantityView = (TextView) view.findViewById(R.id.productQuantity);
@@ -57,16 +61,17 @@ public class InventoryCursorAdapter extends CursorAdapter {
                 (InventoryEntry.COLUMN_BEER_NAME));
         int productPrice = cursor.getInt(cursor.getColumnIndex
                 (InventoryEntry.COLUMN_PRICE));
-        int productQuantity = cursor.getInt(cursor.getColumnIndex
+        final int productQuantity = cursor.getInt(cursor.getColumnIndex
                 (InventoryEntry.COLUMN_QUANTITY));
         quantityView.setTag(cursor.getInt
                 (cursor.getColumnIndex(InventoryEntry._ID)));
         String productDescription = cursor.getString(cursor.getColumnIndex
                 (InventoryEntry.COLUMN_DESCRIPTION));
 
+
         nameView.setText(productName);
         priceView.setText("$" + Integer.toString(productPrice));
-        quantityView.setText(Integer.toString(productQuantity) + "  gallons");
+        quantityView.setText(Integer.toString(productQuantity));
         summaryView.setText(productDescription);
 
         mRestock.setOnClickListener(new View.OnClickListener() {
@@ -75,12 +80,12 @@ public class InventoryCursorAdapter extends CursorAdapter {
                 long rowId = Long.valueOf(quantityView.getTag().toString());
                 String filter = "_ID=" + rowId;
                 int currentQuantity = Integer.valueOf(quantityView.getText().toString());
-                if (currentQuantity > 0){
+                if (currentQuantity > 0) {
                     mDbHelper = new InventoryDbHelper(context);
                     SQLiteDatabase database = mDbHelper.getWritableDatabase();
                     int restockNewQuantity = currentQuantity + 1;
 
-                    ContentValues newRestockValue= new ContentValues();
+                    ContentValues newRestockValue = new ContentValues();
                     newRestockValue.put(InventoryEntry.COLUMN_QUANTITY, restockNewQuantity);
                     database.update(InventoryEntry.TABLE_NAME, newRestockValue, filter, null);
                     quantityView.setText(String.valueOf(restockNewQuantity));
@@ -95,7 +100,7 @@ public class InventoryCursorAdapter extends CursorAdapter {
                 long rowId = Long.valueOf(quantityView.getTag().toString());
                 String filter = "_ID=" + rowId;
                 int saleCurrentQuantity = Integer.valueOf(quantityView.getText().toString());
-                if (saleCurrentQuantity > 0) {
+                if (saleCurrentQuantity > 1) {
                     mDbHelper = new InventoryDbHelper(context);
                     SQLiteDatabase database = mDbHelper.getWritableDatabase();
                     int saleNewQuantity = saleCurrentQuantity - 1;
@@ -105,7 +110,8 @@ public class InventoryCursorAdapter extends CursorAdapter {
                     database.update(InventoryEntry.TABLE_NAME, newSaleValues, filter, null);
                     quantityView.setText(String.valueOf(saleNewQuantity));
                     database.close();
-
+                }else if (saleCurrentQuantity == 1){
+                    Log.i(LOG_TAG, "Button click works at 1");
                 }
             }
         });

@@ -59,7 +59,6 @@ public class InventoryContract {
         public static final String COLUMN_TYPE_BEER = "type";
         public static final String COLUMN_PRICE = "price";
         public static final String COLUMN_DESCRIPTION = "description";
-
         /*
          * Possible beer colors for "expected color" column displayed within a spinner menu.
          */

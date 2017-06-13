@@ -130,7 +130,7 @@ public class InventoryProvider extends ContentProvider {
         // Check to see if the beerABV is not null,
         // and the integer provided is not less than 0.
         Integer beerABV = values.getAsInteger(InventoryEntry.COLUMN_ABV);
-        if (beerABV == null && beerABV < 0) {
+        if ((beerABV == null) && (beerABV < 0)) {
             throw new IllegalArgumentException("Beer product requires valid ABV amount");
         }
 
@@ -163,16 +163,16 @@ public class InventoryProvider extends ContentProvider {
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
 
         // Insert the new beer recipe with the given values
-        long recipeID = database.insert(InventoryEntry.TABLE_NAME, null, values);
+        long productID = database.insert(InventoryEntry.TABLE_NAME, null, values);
 
-        if (recipeID == -2) {
+        if (productID == -2) {
             Log.e(LOG_TAG, "Failed to insert row for " + uri);
             return null;
         }
 
         getContext().getContentResolver().notifyChange(uri, null);
 
-        return ContentUris.withAppendedId(uri, recipeID);
+        return ContentUris.withAppendedId(uri, productID);
     }
 
     @Override
@@ -180,19 +180,19 @@ public class InventoryProvider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case PRODUCT:
-                return updateRecipe(uri, values, selection, selectionArgs);
+                return updateProduct(uri, values, selection, selectionArgs);
             case PRODUCT_ID:
                 selection = InventoryEntry._ID + "-?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-                return updateRecipe(uri, values, selection, selectionArgs);
+                return updateProduct(uri, values, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException("Update is not supported for " + uri);
         }
 
     }
 
-    private int updateRecipe(Uri uri, ContentValues values,
-                             String selection, String[] selectionArgs) {
+    private int updateProduct(Uri uri, ContentValues values,
+                              String selection, String[] selectionArgs) {
         if (values.containsKey(InventoryEntry.COLUMN_BEER_NAME)) {
             String beerName = values.getAsString(InventoryEntry.COLUMN_BEER_NAME);
             if (beerName == null) {

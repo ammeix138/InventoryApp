@@ -73,28 +73,28 @@
                 android:id="@+id/restockButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" +Restock"
-                android:textColor="#ffffff"
-                android:textStyle="italic"
-                android:background="#85000000"
-                android:focusable="false"
                 android:layout_alignParentTop="true"
                 android:layout_toLeftOf="@+id/soldButton"
-                android:layout_toStartOf="@+id/soldButton" />
+                android:layout_toStartOf="@+id/soldButton"
+                android:background="#85000000"
+                android:focusable="false"
+                android:text=" +Restock"
+                android:textColor="#ffffff"
+                android:textStyle="italic" />
 
             <Button
                 android:id="@+id/soldButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
                 android:layout_marginLeft="6dp"
+                android:background="#85000000"
                 android:focusable="false"
                 android:text=" -Sold"
                 android:textColor="#ffffff"
-                android:background="#85000000"
-                android:textStyle="italic"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
+                android:textStyle="italic" />
 
         </RelativeLayout>
 

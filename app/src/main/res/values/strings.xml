@@ -95,6 +95,8 @@
     <string name="product_description_field_title">Product Description:</string>
     <string name="product_description_here_edit_text_hint">Please enter your product
         description here....</string>
+    <string name="supplier_email">commercial.orders@theyeastbay.com</string>
+    <string name="email_subject_line">Place Order For: Dreadnaught Brewery</string>
 
     //TODO: FINISH DESCRIBING STRING RESOURCES.
 </resources>
