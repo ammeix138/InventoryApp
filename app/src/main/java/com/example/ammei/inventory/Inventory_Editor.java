@@ -1,5 +1,6 @@
 package com.example.ammei.inventory;
 
+import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
@@ -8,7 +9,10 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
@@ -24,11 +28,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.ammei.inventory.Data.InventoryDbHelper;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 import static com.example.ammei.inventory.Data.InventoryContract.InventoryEntry;
 
@@ -38,93 +45,74 @@ public class Inventory_Editor extends AppCompatActivity
     private static final String LOG_TAG = InventoryEntry.class.getSimpleName();
 
     private static final int PICK_IMAGE_REQUEST = 0;
-    private static final int MAIL_REQUEST = 1;
-
-    /**
-     * Intent to send order/restock request to a supplier
-     */
-    Intent emailSupplierIntent;
-
-    private Cursor mCursor;
-
     /**
      * Identifier for the inventory data loader
      */
     private static final int CURRENT_PRODUCT_LOADER = 0;
-
     /**
-     * Content URI for the existing inventory
+     * Intent to send order/restock request to a supplier
      */
-    private Uri mCurrentProductUri;
-
-    private ImageView mImageView;
-
-    /**
-     * EditText field to enter Beer Name
-     */
-    private EditText mNameOfBeer;
-
-    /**
-     * EditText to enter the quantity of beer available
-     */
-    private EditText mQuantityOfBeer;
-
-    /**
-     * Spinner to enter a valid color option when prompted
-     */
-    private Spinner mColorSpinner;
-
-    /**
-     * EditText field to enter the ABV for the beer product
-     */
-    private EditText mAlcoholByVolume;
-
-    /**
-     * EditText field to enter the price of the beer product
-     */
-    private EditText mPriceOfBeer;
-
-    /**
-     * Spinner to choose a valid type of beer when prompted
-     */
-    private Spinner mTypeOfBeerSpinner;
-
-    /**
-     * EditText field to enter the description of the beer product
-     */
-    private EditText mEnterDescription;
-
-    /**
-     * Color of the beer product. The possible valid values are in the InventoryContract.java file.
-     */
-    private int mBeerColor = InventoryEntry.COLOR_UNKNOWN;
-
-    /**
-     * Type of the beer product. The possible valid values are in the InventoryContract.java file.
-     */
-    private int mBeerType = InventoryEntry.BT_UNKNOWN;
-
-    /**
-     * Boolean flag which keeps track of whether or not the product has been edited or not
-     */
-    private boolean mProductHasChanged = false;
-
+    Intent emailSupplierIntent;
     Button restockButton;
     Button soldButton;
-    ImageButton mImageButton;
     Button mOrderButton;
-
     InventoryDbHelper mDbHelper;
-
     long itemId;
-
     /**
      * Global variables to increment the current quantity of beer by either
      * adding(+) or subtracting(-) by 1.
      */
     int addQuantity = +1;
     int soldQuantity = -1;
+    private Cursor mCursor;
+    /**
+     * Content URI for the existing inventory
+     */
+    private Uri mCurrentProductUri;
 
+    private Uri mURI;
+    /**
+     * EditText field to enter Beer Name
+     */
+    private EditText mNameOfBeer;
+    /**
+     * EditText to enter the quantity of beer available
+     */
+    private EditText mQuantityOfBeer;
+    /**
+     * Spinner to enter a valid color option when prompted
+     */
+    private Spinner mColorSpinner;
+    /**
+     * EditText field to enter the ABV for the beer product
+     */
+    private EditText mAlcoholByVolume;
+    /**
+     * EditText field to enter the price of the beer product
+     */
+    private EditText mPriceOfBeer;
+    /**
+     * Spinner to choose a valid type of beer when prompted
+     */
+    private Spinner mTypeOfBeerSpinner;
+    /**
+     * EditText field to enter the description of the beer product
+     */
+    private EditText mEnterDescription;
+
+    private ImageButton mImageButton;
+    /**
+     * Color of the beer product. The possible valid values are in the InventoryContract.java file.
+     */
+    private int mBeerColor = InventoryEntry.COLOR_UNKNOWN;
+    /**
+     * Type of the beer product. The possible valid values are in the InventoryContract.java file.
+     */
+    private int mBeerType = InventoryEntry.BT_UNKNOWN;
+    /**
+     * Boolean flag which keeps track of whether or not the product has been edited or not
+     */
+    private boolean mProductHasChanged = false;
     /**
      * OnTouchListener that listens for any user touches on a View, implying that the user is modifying
      * this view, and we changes the mProductHasChanged boolean to true.
@@ -193,25 +181,42 @@ public class Inventory_Editor extends AppCompatActivity
         setupSpinnerColor();
         setUpSpinnerType();
 
+        // Open Image Selector to the User when clicked.
+        mImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openImageSelector();
+            }
+        });
+
+        // Initializing the order button to read the click from the user.
         mOrderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // Send email intent when order button is clicked to the users email.
                 emailSupplierIntent = new Intent(Intent.ACTION_SENDTO);
-                //Only email apps should handle this.
+                // Only email apps should handle this.
                 emailSupplierIntent.setData(Uri.parse("mailto:"));
-                emailSupplierIntent.setType("plain/text");
                 emailSupplierIntent.putExtra(Intent.EXTRA_EMAIL, new String[]
                         {getString(R.string.supplier_email)});
                 emailSupplierIntent.putExtra(Intent.EXTRA_SUBJECT,
                         getString(R.string.email_subject_line));
-                emailSupplierIntent.putExtra(Intent.EXTRA_TEXT, "Place Order For: " + mNameOfBeer +
-                        "Dreadnaught Current Stock: " + mQuantityOfBeer);
-                if (emailSupplierIntent.resolveActivity(getPackageManager()) != null){
+                emailSupplierIntent.putExtra(Intent.EXTRA_TEXT,
+                        getString(R.string.email_text_product_order_with_name) + "\n" +
+                                mNameOfBeer.getText().toString().trim() + "\n\n"
+                                + getString(R.string.email_text_quantity) + "\n"
+                                + mQuantityOfBeer.getText().toString().trim() + "\n\n"
+                                + getString(R.string.email_text_body) + "\n\n\n"
+                                + getString(R.string.email_text_ending_signature) + "\n"
+                                + getString(R.string.email_text_signature_name) + "\n\n\n"
+                                + getString(R.string.email_contact_phone) + "\n"
+                                + getString(R.string.email_contact_email));
+                // Check to ensure user operating the app as a viable email client
+                if (emailSupplierIntent.resolveActivity(getPackageManager()) != null) {
                     startActivity(emailSupplierIntent);
                 }
 
-                Log.e(LOG_TAG, "Order button click successful");
+                Log.i(LOG_TAG, "Order button click successful");
             }
         });
 
@@ -305,6 +310,7 @@ public class Inventory_Editor extends AppCompatActivity
      * Get user input from editor and save new pet into database.
      */
     private void saveProduct() {
+
         // Read from the input fields
         // Use trim to get rid of trailing white space.
         String nameString = mNameOfBeer.getText().toString().trim();
@@ -312,6 +318,7 @@ public class Inventory_Editor extends AppCompatActivity
         String quantityString = mQuantityOfBeer.getText().toString().trim();
         String priceString = mPriceOfBeer.getText().toString().trim();
         String descriptionString = mEnterDescription.getText().toString().trim();
+        String imageString = mImageButton.toString();
 
         // Will check to see if there is supposed to be a new beer product
         // and check if all the input fields in the editor are blank.
@@ -321,6 +328,7 @@ public class Inventory_Editor extends AppCompatActivity
                 && TextUtils.isEmpty(priceString)
                 && TextUtils.isEmpty(quantityString)
                 && TextUtils.isEmpty(descriptionString)
+                && TextUtils.isEmpty(imageString)
                 && mBeerColor == InventoryEntry.COLOR_UNKNOWN
                 && mBeerType == InventoryEntry.BT_UNKNOWN) {
             return;
@@ -336,6 +344,7 @@ public class Inventory_Editor extends AppCompatActivity
         productValues.put(InventoryEntry.COLUMN_PRICE, priceString);
         productValues.put(InventoryEntry.COLUMN_QUANTITY, quantityString);
         productValues.put(InventoryEntry.COLUMN_DESCRIPTION, descriptionString);
+        productValues.put(InventoryEntry.COLUMN_IMAGE, imageString);
 
         // If the ABV of a particular beer product is not inputted by the user,
         // don't try to parse the string into an integer value. Use 0 as a default.
@@ -467,10 +476,6 @@ public class Inventory_Editor extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    //TODO: FIGURE OUT WHY SUBMITTING ORDER BUTTON IS NOT WORKING!!
-    //TODO: IMPLEMENT THE IMAGE DATA STORAGE WITHIN THE APP, WILL NEED TO ALTER INVENTORY TABLE
-    //TODO: WITHIN THE DATABASE ON SQLITE3.
-
     /**
      * Method is called when the back button is pressed.
      */
@@ -510,7 +515,10 @@ public class Inventory_Editor extends AppCompatActivity
                 InventoryEntry.COLUMN_PRICE,
                 InventoryEntry.COLUMN_QUANTITY,
                 InventoryEntry.COLUMN_TYPE_BEER,
-                InventoryEntry.COLUMN_DESCRIPTION
+                InventoryEntry.COLUMN_DESCRIPTION,
+                InventoryEntry.COLUMN_IMAGE
+
+                //TODO: IMAGE IS NOT SAVE CORRECTLY, IT WILL APPEAR BUT NOT SAVE TO THE DATABASE!
         };
 
         // This loader will execute the ContentProvider's query method on a background thread.
@@ -540,6 +548,7 @@ public class Inventory_Editor extends AppCompatActivity
             int priceColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_PRICE);
             int quantityColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_QUANTITY);
             int descriptionColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_DESCRIPTION);
+            int pictureColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_IMAGE);
 
 
             // Extract out the value from the Cursor for the given column index.
@@ -550,6 +559,9 @@ public class Inventory_Editor extends AppCompatActivity
             int beerPrice = cursor.getInt(priceColumnIndex);
             int beerQuantity = cursor.getInt(quantityColumnIndex);
             String beerDescription = cursor.getString(descriptionColumnIndex);
+            byte[] beerImage = cursor.getBlob(pictureColumnIndex);
+            Bitmap bmp = BitmapFactory.decodeByteArray(beerImage, 0, beerImage.length);
+            mImageButton.setImageBitmap(bmp);
 
             //Update the views on the screen with the values from the database.
             mNameOfBeer.setText(beerName);
@@ -593,7 +605,7 @@ public class Inventory_Editor extends AppCompatActivity
                 case InventoryEntry.BT_STOUT:
                     mTypeOfBeerSpinner.setSelection(4);
                     break;
-                case InventoryEntry.BT_INDIAPALE_ALE:
+                case InventoryEntry.BT_INDIANPALE_ALE:
                     mTypeOfBeerSpinner.setSelection(5);
                     break;
                 case InventoryEntry.BT_PORTER:
@@ -645,6 +657,7 @@ public class Inventory_Editor extends AppCompatActivity
 
     /**
      * Prompt the user to confirm that they would like to delete this product entry.
+     *
      * @param itemId
      */
     private void showDeleteConfirmationDialog(long itemId) {
@@ -694,6 +707,90 @@ public class Inventory_Editor extends AppCompatActivity
 
         // Close Activity
         finish();
+    }
+
+
+    private void openImageSelector() {
+        mDbHelper = new InventoryDbHelper(this);
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+        Intent imageIntent;
+
+        if (Build.VERSION.SDK_INT < 19) {
+            imageIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        } else {
+            imageIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            imageIntent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        }
+
+        imageIntent.setType("image/*");
+        startActivityForResult(Intent.createChooser(imageIntent, "Select Image"),
+                PICK_IMAGE_REQUEST);
+        database.close();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
+            if (resultData != null) {
+                mCurrentProductUri = resultData.getData();
+                Log.i(LOG_TAG, "Uri: " + mCurrentProductUri.toString());
+
+                mImageButton.setImageBitmap(getBitmapFromUri(mCurrentProductUri));
+
+            }
+        } else if (requestCode == Activity.RESULT_OK) ;
+    }
+
+    public Bitmap getBitmapFromUri(Uri uri) {
+        if (uri == null || uri.toString().isEmpty())
+            return null;
+
+        // Get the dimensions of the view
+        int targetWidth = mImageButton.getWidth();
+        int targetHeight = mImageButton.getHeight();
+
+        InputStream input = null;
+        try {
+            input = this.getContentResolver().openInputStream(uri);
+
+            // Get the dimensions of the bitmap.
+            BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+            bitmapOptions.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(input, null, bitmapOptions);
+            input.close();
+
+            int photoWidth = bitmapOptions.outWidth;
+            int photoHeigth = bitmapOptions.outHeight;
+
+            // Determine how much to scale down the image.
+            int scaleFactor = Math.min(photoWidth / targetWidth, photoHeigth / targetHeight);
+
+            // Decode the image file into a Bitmap sized to fill the View
+            bitmapOptions.inJustDecodeBounds = false;
+            bitmapOptions.inSampleSize = scaleFactor;
+            bitmapOptions.inPurgeable = true;
+
+            input = this.getContentResolver().openInputStream(uri);
+            Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
+            input.close();
+            return bitmap;
+
+        } catch (FileNotFoundException fne) {
+            Log.e(LOG_TAG, "FAILED to load image.", fne);
+            return null;
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "FAILED to load image.", e);
+            return null;
+        } finally {
+            try {
+                input.close();
+            } catch (IOException ioe) {
+
+            }
+        }
     }
 
     /**

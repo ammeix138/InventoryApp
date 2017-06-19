@@ -11,8 +11,8 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import static com.example.ammei.inventory.Data.InventoryContract.CONTENT_AUTHORITY;
-import static com.example.ammei.inventory.Data.InventoryContract.PATH_INVENTORY;
 import static com.example.ammei.inventory.Data.InventoryContract.InventoryEntry;
+import static com.example.ammei.inventory.Data.InventoryContract.PATH_INVENTORY;
 
 /**
  * Created by ammei on 6/4/2017.
@@ -159,6 +159,11 @@ public class InventoryProvider extends ContentProvider {
             throw new IllegalArgumentException("Entry must include product description");
         }
 
+        String productImage = values.getAsString(InventoryEntry.COLUMN_IMAGE);
+        if (productImage == null){
+            throw new IllegalArgumentException("Entry must include an image");
+        }
+
         // Get writable database
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
 
@@ -239,6 +244,13 @@ public class InventoryProvider extends ContentProvider {
             String beerRecipe = values.getAsString(InventoryEntry.COLUMN_DESCRIPTION);
             if (beerRecipe == null) {
                 throw new IllegalArgumentException("Product requires a description");
+            }
+        }
+
+        if (values.containsKey(InventoryEntry.COLUMN_IMAGE)){
+            String beerImage = values.getAsString(InventoryEntry.COLUMN_IMAGE);
+            if (beerImage == null){
+                throw new IllegalArgumentException("Product requires an image");
             }
         }
 

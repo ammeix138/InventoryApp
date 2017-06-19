@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ammei.inventory.R;
@@ -29,6 +30,8 @@ public class InventoryCursorAdapter extends CursorAdapter {
     Button mRestock;
 
     Button mSold;
+
+    ImageView mImage;
 
     private Cursor mCursor;
 
@@ -67,7 +70,6 @@ public class InventoryCursorAdapter extends CursorAdapter {
                 (cursor.getColumnIndex(InventoryEntry._ID)));
         String productDescription = cursor.getString(cursor.getColumnIndex
                 (InventoryEntry.COLUMN_DESCRIPTION));
-
 
         nameView.setText(productName);
         priceView.setText("$" + Integer.toString(productPrice));

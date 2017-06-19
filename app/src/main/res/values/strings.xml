@@ -96,7 +96,15 @@
     <string name="product_description_here_edit_text_hint">Please enter your product
         description here....</string>
     <string name="supplier_email">commercial.orders@theyeastbay.com</string>
-    <string name="email_subject_line">Place Order For: Dreadnaught Brewery</string>
+    <string name="email_subject_line">Place Order For Product: Dreadnaught Brewery</string>
+    <string name="email_text_body">If there are any issues or you have questions regarding our
+        order, please contact us with the info provided below.</string>
+    <string name = "email_text_ending_signature">Thank you and have a great day,</string>
+    <string name="email_text_signature_name">Team Dreadnaught</string>
+    <string name="email_contact_phone">Direct: (360)-794-8875</string>
+    <string name="email_contact_email">Email: dreadnoughtbrew@brewmaster.com</string>
+    <string name="email_text_quantity">Dreadnaught\'s Current Stock:</string>
+    <string name="email_text_product_order_with_name">Place Order For:</string>
 
     //TODO: FINISH DESCRIBING STRING RESOURCES.
 </resources>

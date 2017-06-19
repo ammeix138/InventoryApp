@@ -59,6 +59,7 @@ public class InventoryContract {
         public static final String COLUMN_TYPE_BEER = "type";
         public static final String COLUMN_PRICE = "price";
         public static final String COLUMN_DESCRIPTION = "description";
+        public static final String COLUMN_IMAGE = "image";
         /*
          * Possible beer colors for "expected color" column displayed within a spinner menu.
          */
@@ -92,7 +93,7 @@ public class InventoryContract {
         public static final int BT_PALE_ALE = 2;
         public static final int BT_LAGER = 3;
         public static final int BT_STOUT = 4;
-        public static final int BT_INDIAPALE_ALE = 5;
+        public static final int BT_INDIANPALE_ALE = 5;
         public static final int BT_PORTER = 6;
 
         /*
@@ -104,7 +105,7 @@ public class InventoryContract {
                     beerType == BT_PALE_ALE ||
                     beerType == BT_LAGER ||
                     beerType == BT_STOUT ||
-                    beerType == BT_INDIAPALE_ALE ||
+                    beerType == BT_INDIANPALE_ALE ||
                     beerType == BT_PORTER) {
                 return true;
             }
