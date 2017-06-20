@@ -94,6 +94,19 @@ public class InventoryProvider extends ContentProvider {
         return cursor;
     }
 
+    @Override
+    public String getType(Uri uri) {
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case PRODUCT:
+                return InventoryEntry.CONTENT_LIST_TYPE;
+            case PRODUCT_ID:
+                return InventoryEntry.CONTENT_ITEM_TYPE;
+            default:
+                throw new IllegalArgumentException("Unknown URI " + uri + " with match " + match);
+        }
+    }
+
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues values) {
@@ -304,16 +317,4 @@ public class InventoryProvider extends ContentProvider {
         return rowsDeleted;
     }
 
-    @Override
-    public String getType(Uri uri) {
-        final int match = sUriMatcher.match(uri);
-        switch (match) {
-            case PRODUCT:
-                return InventoryEntry.CONTENT_LIST_TYPE;
-            case PRODUCT_ID:
-                return InventoryEntry.CONTENT_ITEM_TYPE;
-            default:
-                throw new IllegalArgumentException("Unknown URI " + uri + " with match " + match);
-        }
-    }
 }

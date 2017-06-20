@@ -27,7 +27,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -69,8 +69,6 @@ public class Inventory_Editor extends AppCompatActivity
      * Content URI for the existing inventory
      */
     private Uri mCurrentProductUri;
-
-    private Uri mURI;
     /**
      * EditText field to enter Beer Name
      */
@@ -100,7 +98,7 @@ public class Inventory_Editor extends AppCompatActivity
      */
     private EditText mEnterDescription;
 
-    private ImageButton mImageButton;
+    private ImageView mImageView;
     /**
      * Color of the beer product. The possible valid values are in the InventoryContract.java file.
      */
@@ -148,7 +146,7 @@ public class Inventory_Editor extends AppCompatActivity
             // so change the app bar to read "Edit Product"
             setTitle(getString(R.string.app_bar_edit_product));
 
-            // Initialize a loader to read the inventory data frm the database,
+            // Initialize a loader to read the inventory data from the database,
             // and display the current values in the editor.
             getLoaderManager().initLoader(CURRENT_PRODUCT_LOADER, null, this);
         }
@@ -161,12 +159,12 @@ public class Inventory_Editor extends AppCompatActivity
         mPriceOfBeer = (EditText) findViewById(R.id.priceEditText);
         mQuantityOfBeer = (EditText) findViewById(R.id.quantityEditText);
         mEnterDescription = (EditText) findViewById(R.id.enterDescription);
-
+        mImageView = (ImageView) findViewById(R.id.product_imageButton);
 
         restockButton = (Button) findViewById(R.id.restockButton);
         soldButton = (Button) findViewById(R.id.soldButton);
         mOrderButton = (Button) findViewById(R.id.orderButton);
-        mImageButton = (ImageButton) findViewById(R.id.product_imageButton);
+
 
         // OnTouchListeners set up for all input fields within the inventory editor activity.
         // So we can determine if the user clicked on or has modified them.
@@ -182,7 +180,7 @@ public class Inventory_Editor extends AppCompatActivity
         setUpSpinnerType();
 
         // Open Image Selector to the User when clicked.
-        mImageButton.setOnClickListener(new View.OnClickListener() {
+        mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openImageSelector();
@@ -318,7 +316,19 @@ public class Inventory_Editor extends AppCompatActivity
         String quantityString = mQuantityOfBeer.getText().toString().trim();
         String priceString = mPriceOfBeer.getText().toString().trim();
         String descriptionString = mEnterDescription.getText().toString().trim();
-        String imageString = mImageButton.toString();
+        String imageString = mImageView.toString();
+
+        // Create a ContentValues object where column names are the keys,
+        // and recipe input fields from the editor activity are the values.
+        ContentValues productValues = new ContentValues();
+        productValues.put(InventoryEntry.COLUMN_BEER_NAME, nameString);
+        productValues.put(InventoryEntry.COLUMN_COLOR, mBeerColor);
+        productValues.put(InventoryEntry.COLUMN_ABV, abvString);
+        productValues.put(InventoryEntry.COLUMN_TYPE_BEER, mBeerType);
+        productValues.put(InventoryEntry.COLUMN_PRICE, priceString);
+        productValues.put(InventoryEntry.COLUMN_QUANTITY, quantityString);
+        productValues.put(InventoryEntry.COLUMN_DESCRIPTION, descriptionString);
+        productValues.put(InventoryEntry.COLUMN_IMAGE, imageString);
 
         // Will check to see if there is supposed to be a new beer product
         // and check if all the input fields in the editor are blank.
@@ -333,18 +343,6 @@ public class Inventory_Editor extends AppCompatActivity
                 && mBeerType == InventoryEntry.BT_UNKNOWN) {
             return;
         }
-
-        // Create a ContentValues object where column names are the keys,
-        // and recipe input fields from the editor activity are the values.
-        ContentValues productValues = new ContentValues();
-        productValues.put(InventoryEntry.COLUMN_BEER_NAME, nameString);
-        productValues.put(InventoryEntry.COLUMN_COLOR, mBeerColor);
-        productValues.put(InventoryEntry.COLUMN_ABV, abvString);
-        productValues.put(InventoryEntry.COLUMN_TYPE_BEER, mBeerType);
-        productValues.put(InventoryEntry.COLUMN_PRICE, priceString);
-        productValues.put(InventoryEntry.COLUMN_QUANTITY, quantityString);
-        productValues.put(InventoryEntry.COLUMN_DESCRIPTION, descriptionString);
-        productValues.put(InventoryEntry.COLUMN_IMAGE, imageString);
 
         // If the ABV of a particular beer product is not inputted by the user,
         // don't try to parse the string into an integer value. Use 0 as a default.
@@ -517,8 +515,6 @@ public class Inventory_Editor extends AppCompatActivity
                 InventoryEntry.COLUMN_TYPE_BEER,
                 InventoryEntry.COLUMN_DESCRIPTION,
                 InventoryEntry.COLUMN_IMAGE
-
-                //TODO: IMAGE IS NOT SAVE CORRECTLY, IT WILL APPEAR BUT NOT SAVE TO THE DATABASE!
         };
 
         // This loader will execute the ContentProvider's query method on a background thread.
@@ -559,9 +555,7 @@ public class Inventory_Editor extends AppCompatActivity
             int beerPrice = cursor.getInt(priceColumnIndex);
             int beerQuantity = cursor.getInt(quantityColumnIndex);
             String beerDescription = cursor.getString(descriptionColumnIndex);
-            byte[] beerImage = cursor.getBlob(pictureColumnIndex);
-            Bitmap bmp = BitmapFactory.decodeByteArray(beerImage, 0, beerImage.length);
-            mImageButton.setImageBitmap(bmp);
+            String beerImage = cursor.getString(pictureColumnIndex);
 
             //Update the views on the screen with the values from the database.
             mNameOfBeer.setText(beerName);
@@ -569,6 +563,7 @@ public class Inventory_Editor extends AppCompatActivity
             mPriceOfBeer.setText(Integer.toString(beerPrice));
             mQuantityOfBeer.setText(Integer.toString(beerQuantity));
             mEnterDescription.setText(beerDescription);
+            mImageView.setImageURI(Uri.parse(beerImage));
 
             // Beer Color is a dropdown spinner, so map the constant value from the database
             // into one of the dropdown options (0 is Unknown)
@@ -727,7 +722,7 @@ public class Inventory_Editor extends AppCompatActivity
         imageIntent.setType("image/*");
         startActivityForResult(Intent.createChooser(imageIntent, "Select Image"),
                 PICK_IMAGE_REQUEST);
-        database.close();
+
     }
 
     @Override
@@ -738,7 +733,7 @@ public class Inventory_Editor extends AppCompatActivity
                 mCurrentProductUri = resultData.getData();
                 Log.i(LOG_TAG, "Uri: " + mCurrentProductUri.toString());
 
-                mImageButton.setImageBitmap(getBitmapFromUri(mCurrentProductUri));
+                mImageView.setImageBitmap(getBitmapFromUri(mCurrentProductUri));
 
             }
         } else if (requestCode == Activity.RESULT_OK) ;
@@ -749,8 +744,8 @@ public class Inventory_Editor extends AppCompatActivity
             return null;
 
         // Get the dimensions of the view
-        int targetWidth = mImageButton.getWidth();
-        int targetHeight = mImageButton.getHeight();
+        int targetWidth = mImageView.getWidth();
+        int targetHeight = mImageView.getHeight();
 
         InputStream input = null;
         try {

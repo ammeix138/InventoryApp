@@ -189,7 +189,7 @@
 
         </LinearLayout>
 
-        <ImageButton
+        <ImageView
             android:layout_gravity="center"
             android:id="@+id/product_imageButton"
             android:layout_width="wrap_content"
