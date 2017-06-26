@@ -14,9 +14,4 @@
         android:title="Delete All Entries"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/action_update_recipe"
-        android:title="Update Test Recipe"
-        app:showAsAction="never"/>
-
 </menu>
