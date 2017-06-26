@@ -11,26 +11,24 @@ import android.provider.BaseColumns;
 public class InventoryContract {
 
     /**
-     * Empty Constructor to prevent instantiating the contract class.
-     */
-    private InventoryContract() {
-    }
-
-    /**
      * Name for the Content Provider.
      */
     public static final String CONTENT_AUTHORITY = "com.example.ammei.inventory";
-
     /**
      * Creating CONTENT_AUTHORITY in order to provide the base for the URI's,
      * which will be used to contact the content provider.
      */
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
-
     /**
      * Possible path for the content provider.
      */
     public static final String PATH_INVENTORY = "inventory";
+
+    /**
+     * Empty Constructor to prevent instantiating the contract class.
+     */
+    private InventoryContract() {
+    }
 
     public static final class InventoryEntry implements BaseColumns {
 
@@ -68,22 +66,6 @@ public class InventoryContract {
         public static final int COLOR_AMBER = 2;
         public static final int COLOR_BROWN = 3;
         public static final int COLOR_BLACK = 4;
-
-        /*
-         * Returns whichever color value the user selects.
-         */
-        public static boolean isValidColor(int beerColor) {
-            if (beerColor == COLOR_UNKNOWN ||
-                    beerColor == COLOR_YELLOW ||
-                    beerColor == COLOR_AMBER ||
-                    beerColor == COLOR_BROWN ||
-                    beerColor == COLOR_BLACK) {
-                return true;
-            }
-
-            return false;
-        }
-
         /*
          * Note: "BT" stands for "Beer Type"
          * Possible beer types user may select and is displayed within a spinner menu.
@@ -97,20 +79,29 @@ public class InventoryContract {
         public static final int BT_PORTER = 6;
 
         /*
+         * Returns whichever color value the user selects.
+         */
+        public static boolean isValidColor(int beerColor) {
+            return beerColor == COLOR_UNKNOWN ||
+                    beerColor == COLOR_YELLOW ||
+                    beerColor == COLOR_AMBER ||
+                    beerColor == COLOR_BROWN ||
+                    beerColor == COLOR_BLACK;
+
+        }
+
+        /*
          * Returns whichever beer type value the user chooses.
          */
         public static boolean isValidBeerType(int beerType) {
-            if (beerType == BT_UNKNOWN ||
+            return beerType == BT_UNKNOWN ||
                     beerType == BT_ALE ||
                     beerType == BT_PALE_ALE ||
                     beerType == BT_LAGER ||
                     beerType == BT_STOUT ||
                     beerType == BT_INDIANPALE_ALE ||
-                    beerType == BT_PORTER) {
-                return true;
-            }
+                    beerType == BT_PORTER;
 
-            return false;
         }
     }
 }

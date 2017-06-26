@@ -103,7 +103,7 @@ public class InventoryCursorAdapter extends CursorAdapter {
                     database.update(InventoryEntry.TABLE_NAME, newSaleValues, filter, null);
                     quantityView.setText(String.valueOf(saleNewQuantity));
                     database.close();
-                }else if (saleCurrentQuantity == 1){
+                } else if (saleCurrentQuantity == 1) {
                     Log.i(LOG_TAG, "Button click works at 1");
                 }
             }

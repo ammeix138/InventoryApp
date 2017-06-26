@@ -24,10 +24,14 @@ import com.example.ammei.inventory.Data.InventoryCursorAdapter;
 public class Inventory_Activity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    /** Identifier for the inventory data loader */
+    /**
+     * Identifier for the inventory data loader
+     */
     private static final int INVENTORY_LOADER = 0;
 
-    /** Adapter for the ListView */
+    /**
+     * Adapter for the ListView
+     */
     InventoryCursorAdapter mCursorAdapter;
 
     @Override

@@ -171,7 +171,7 @@ public class InventoryProvider extends ContentProvider {
         }
 
         String productImage = values.getAsString(InventoryEntry.COLUMN_IMAGE);
-        if (productImage == null){
+        if (productImage == null) {
             throw new IllegalArgumentException("Entry must include an image");
         }
 
@@ -258,9 +258,9 @@ public class InventoryProvider extends ContentProvider {
             }
         }
 
-        if (values.containsKey(InventoryEntry.COLUMN_IMAGE)){
+        if (values.containsKey(InventoryEntry.COLUMN_IMAGE)) {
             String beerImage = values.getAsString(InventoryEntry.COLUMN_IMAGE);
-            if (beerImage == null){
+            if (beerImage == null) {
                 throw new IllegalArgumentException("Product requires an image");
             }
         }

@@ -12,9 +12,9 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
         android:fontFamily="sans-serif-medium"
-        android:text="Product Name"
+        android:text="@string/product_name_list_item"
         android:textAppearance="?android:textAppearanceMedium"
-        android:textColor="#f68606"
+        android:textColor="@color/listItemInputTitleColor"
         android:textSize="22sp" />
 
     <LinearLayout
@@ -27,8 +27,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:text="Price: "
-            android:textColor="#f68606" />
+            android:text="@string/price_list_item"
+            android:textColor="@color/listItemInputTitleColor" />
 
         <TextView
             android:id="@+id/productPrice"
@@ -53,8 +53,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:text="Quantity: "
-            android:textColor="#f68606" />
+            android:text="@string/quantity_list_item"
+            android:textColor="@color/listItemInputTitleColor" />
 
         <TextView
             android:id="@+id/productQuantity"
@@ -76,10 +76,10 @@
                 android:layout_alignParentTop="true"
                 android:layout_toLeftOf="@+id/soldButton"
                 android:layout_toStartOf="@+id/soldButton"
-                android:background="#85000000"
+                android:background="@color/buttonBackgroundColor"
                 android:focusable="false"
-                android:text=" +Restock"
-                android:textColor="#ffffff"
+                android:text="@string/restock_button"
+                android:textColor="@color/textAccentColor"
                 android:textStyle="italic" />
 
             <Button
@@ -90,14 +90,13 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="6dp"
-                android:background="#85000000"
+                android:background="@color/buttonBackgroundColor"
                 android:focusable="false"
-                android:text=" -Sold"
-                android:textColor="#ffffff"
+                android:text="@string/sold_button"
+                android:textColor="@color/textAccentColor"
                 android:textStyle="italic" />
 
         </RelativeLayout>
-
     </LinearLayout>
 
     <TextView
@@ -105,8 +104,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
-        android:text="Product Description: "
-        android:textColor="#f68606"
+        android:text="@string/product_description_list_item"
+        android:textColor="@color/listItemInputTitleColor"
         android:textSize="18sp" />
 
     <TextView

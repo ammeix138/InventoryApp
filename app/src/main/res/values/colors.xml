@@ -3,4 +3,22 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <!--Dreadnought title splash screen color-->
+    <color name="splashScreenTitle">#ff830a</color>
+
+    <!--Colors used in the inventory_catalog layout-->
+    <color name="emptyViewTitle">#ffc68c</color>
+    <color name="textAccentColor">#ffffff</color>
+
+    <!--Color for the submit order button within inventory_editor layout-->
+    <color name="submitOrderBackground">#a2ff720e</color>
+
+    <!--Color for the Title fields within the list_item layout-->
+    <color name="listItemInputTitleColor">#f68606</color>
+
+    <!--Background color to restock and sold buttons within the list_item layout-->
+    <color name="buttonBackgroundColor">#85000000</color>
+
+
 </resources>

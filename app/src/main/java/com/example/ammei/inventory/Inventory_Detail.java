@@ -58,7 +58,6 @@ public class Inventory_Detail extends AppCompatActivity
      */
     int addQuantity = +1;
     int soldQuantity = -1;
-    private Cursor mCursor;
     /**
      * Content URI for the existing inventory
      */
@@ -91,7 +90,9 @@ public class Inventory_Detail extends AppCompatActivity
      * EditText field to enter the description of the beer product
      */
     private EditText mEnterDescription;
-
+    /**
+     * ImageView to choose an image from the users gallery
+     */
     private ImageView mImageView;
     /**
      * Color of the beer product. The possible valid values are in the InventoryContract.java file.
@@ -106,6 +107,10 @@ public class Inventory_Detail extends AppCompatActivity
      */
     private boolean mProductHasChanged = false;
     /**
+     * Content URI for the images stored
+     */
+    private Uri mCurrentImageUri;
+    /**
      * OnTouchListener that listens for any user touches on a View, implying that the user is modifying
      * this view, and we changes the mProductHasChanged boolean to true.
      */
@@ -116,8 +121,6 @@ public class Inventory_Detail extends AppCompatActivity
             return false;
         }
     };
-
-    private Uri mCurrentImageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

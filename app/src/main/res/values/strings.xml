@@ -75,7 +75,7 @@
     <string name="product_deleted_toast">Product Deleted</string>
 
     <!--Displays the splash screen title-->
-    <string name="dreadnaught_brewing_splash_title">Dreadnaught Brewing</string>
+    <string name="dreadnaught_brewing_splash_title">Dreadnought Brewing</string>
 
     <!--Displays the "Overview" input field-->
     <string name="overview_field_title">Overview</string>
@@ -85,26 +85,88 @@
 
     <!--Displays the "Color" input field title-->
     <string name="product_color_field_title">Product Color</string>
+
+    <!--Displays the "ABV" input field title-->
     <string name="abv_alcohol_by_volume_field_title">ABV : (Alcohol By Volume)</string>
+
+    <!--Displays the ABV hint to the user-->
     <string name="volume_edit_text_hint">Volume %</string>
+
+    <!--Displays the "Type of beer" input field title-->
     <string name="type_of_beer_field_title">Type of Beer</string>
+
+    <!--Displays the "Price per gallon" input field title-->
     <string name="price_per_gallon_field_title">Price Per Gallon</string>
+
+    <!--Displays the "Price" hint to the user-->
     <string name="_0_00_edit_text_hint">$ 0.00</string>
+
+    <!--Displays the "Quantity" input field title-->
     <string name="available_quantity_field_title">Available Quantity</string>
+
+    <!--Displays the "Quantity" hint to the user-->
     <string name="_0_00_quantity_edit_text_hint">0.00</string>
+
+    <!--Displays the "Product Description" input field title-->
     <string name="product_description_field_title">Product Description:</string>
+
+    <!--Displays the product description hint to the user-->
     <string name="product_description_here_edit_text_hint">Please enter your product
         description here....</string>
+
+    <!--Suppliers email address-->
     <string name="supplier_email">commercial.orders@theyeastbay.com</string>
-    <string name="email_subject_line">Place Order For Product: Dreadnaught Brewery</string>
+
+    <!--Contains the email subject line-->
+    <string name="email_subject_line">Place Order For Product: Dreadnought Brewery</string>
+
+    <!--Contains the email body to supplier-->
     <string name="email_text_body">If there are any issues or you have questions regarding our
         order, please contact us with the info provided below.</string>
-    <string name = "email_text_ending_signature">Thank you and have a great day,</string>
-    <string name="email_text_signature_name">Team Dreadnaught</string>
+
+    <!--Contains email signature-->
+    <string name="email_text_ending_signature">Thank you and have a great day,</string>
+
+    <!--Contains the name of the ordering party-->
+    <string name="email_text_signature_name">Team Dreadnought</string>
+
+    <!--Contains the phone number for ordering recipient-->
     <string name="email_contact_phone">Direct: (360)-794-8875</string>
+
+    <!--Contains the email for ordering recipient-->
     <string name="email_contact_email">Email: dreadnoughtbrew@brewmaster.com</string>
-    <string name="email_text_quantity">Dreadnaught\'s Current Stock:</string>
+
+    <!--Displays Dreadnoughts current Quantity in stock to the supplier-->
+    <string name="email_text_quantity">Dreadnought\'s Current Stock:</string>
+
+    <!--Displays ordering recipients name-->
     <string name="email_text_product_order_with_name">Place Order For:</string>
 
-    //TODO: FINISH DESCRIBING STRING RESOURCES.
+    <!--Displays text for submit order button within the inventory_editor layout-->
+    <string name="submit_order_button">Submit Order</string>
+
+    <!--Displays title "Product Description" within the list_item layout-->
+    <string name="product_description_list_item">Product Description:</string>
+
+    <!--Displays text for the sold button within the list_item layout-->
+    <string name="sold_button">-Sold</string>
+
+    <!--Displays text for the restock button within the list_item layout-->
+    <string name="restock_button">+Restock</string>
+
+    <!--Displays the title "Quantity" within the list_item layout-->
+    <string name="quantity_list_item">Quantity:</string>
+
+    <!--Displays the title "Price" within the list_item layout-->
+    <string name="price_list_item">Price:</string>
+
+    <!--Displays the title "Product Name" within the list_item layout-->
+    <string name="product_name_list_item">Product Name</string>
+
+    <!--Displays insert dummy data menu option-->
+    <string name="insert_test_data_menu">Insert Test Data</string>
+
+    <!--Displays delete all entries for the menu option-->
+    <string name="delete_all_entries_menu">Delete All Entries</string>
+
 </resources>

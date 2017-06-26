@@ -21,9 +21,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:headerDividersEnabled="true"
+        android:dividerHeight="4dp"
         android:footerDividersEnabled="true"
-        android:dividerHeight="4dp" />
+        android:headerDividersEnabled="true" />
 
     <RelativeLayout
         android:id="@+id/emptyView"
@@ -54,7 +54,7 @@
             android:paddingTop="12dp"
             android:text="@string/empty_title_text"
             android:textAppearance="?android:textAppearanceLarge"
-            android:textColor="#ffc68c" />
+            android:textColor="@color/emptyViewTitle" />
 
         <TextView
             android:id="@+id/empty_subTitle_Text"
@@ -64,7 +64,7 @@
             android:layout_centerHorizontal="true"
             android:text="@string/empty_subtitle_text"
             android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="#ffffff" />
+            android:textColor="@color/textAccentColor" />
     </RelativeLayout>
 
     <TextView
@@ -80,7 +80,7 @@
         android:fontFamily="cursive"
         android:paddingLeft="16dp"
         android:text="@string/floating_button_recipe"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/textAccentColor"
         android:textSize="28sp"
         android:textStyle="bold" />
 

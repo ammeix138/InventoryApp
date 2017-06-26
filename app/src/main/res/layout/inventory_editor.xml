@@ -207,12 +207,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="8dp"
-            android:background="#a2ff720e"
+            android:background="@color/submitOrderBackground"
             android:focusable="false"
             android:gravity="center"
             android:padding="8dp"
-            android:text="Submit Order"
-            android:textColor="#ffffff" />
+            android:text="@string/submit_order_button"
+            android:textColor="@color/textAccentColor" />
 
     </LinearLayout>
 </ScrollView>
