@@ -16,7 +16,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.ammei.inventory.Inventory_Editor"
+            android:name="com.example.ammei.inventory.Inventory_Detail"
             android:parentActivityName="com.example.ammei.inventory.Inventory_Activity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -25,14 +25,14 @@
                 android:value="com.example.ammei.inventory.Inventory_Activity" />
         </activity>
         <activity
-            android:label="Home"
-            android:name="com.example.ammei.inventory.Inventory_Activity">
+            android:name="com.example.ammei.inventory.Inventory_Activity"
+            android:label="Home">
         </activity>
         <provider
-            android:authorities="com.example.ammei.inventory"
-            android:grantUriPermissions="true"
             android:name=".Data.InventoryProvider"
-            android:exported="false"/>
+            android:authorities="com.example.ammei.inventory"
+            android:exported="false"
+            android:grantUriPermissions="true" />
     </application>
 
 </manifest>

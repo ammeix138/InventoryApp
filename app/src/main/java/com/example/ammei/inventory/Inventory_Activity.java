@@ -36,12 +36,12 @@ public class Inventory_Activity extends AppCompatActivity
         setContentView(R.layout.inventory_catalog);
 
         // Listens for button click on "Add Product" TextView and sends Intent
-        // to display Inventory_Editor Activity to the user.
+        // to display Inventory_Detail Activity to the user.
         TextView product = (TextView) findViewById(R.id.addProduct);
         product.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent inventoryIntent = new Intent(Inventory_Activity.this, Inventory_Editor.class);
+                Intent inventoryIntent = new Intent(Inventory_Activity.this, Inventory_Detail.class);
                 startActivity(inventoryIntent);
             }
         });
@@ -65,7 +65,7 @@ public class Inventory_Activity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Intent myIntent = new Intent(Inventory_Activity.this, Inventory_Editor.class);
+                Intent myIntent = new Intent(Inventory_Activity.this, Inventory_Detail.class);
 
                 Uri currentInventoryUri = ContentUris.withAppendedId
                         (InventoryEntry.CONTENT_URI, id);
@@ -90,6 +90,8 @@ public class Inventory_Activity extends AppCompatActivity
         values.put(InventoryEntry.COLUMN_PRICE, 15);
         values.put(InventoryEntry.COLUMN_QUANTITY, 8);
         values.put(InventoryEntry.COLUMN_TYPE_BEER, InventoryEntry.BT_UNKNOWN);
+        values.put(InventoryEntry.COLUMN_DESCRIPTION, "My Description");
+        values.put(InventoryEntry.COLUMN_IMAGE, "image");
 
         // Insert a new row for every Beer entry into the provider using the ContentResolver.
         Uri newUri = getContentResolver().insert(InventoryEntry.CONTENT_URI, values);
@@ -136,7 +138,8 @@ public class Inventory_Activity extends AppCompatActivity
                 InventoryEntry.COLUMN_TYPE_BEER,
                 InventoryEntry.COLUMN_PRICE,
                 InventoryEntry.COLUMN_QUANTITY,
-                InventoryEntry.COLUMN_DESCRIPTION
+                InventoryEntry.COLUMN_DESCRIPTION,
+                InventoryEntry.COLUMN_IMAGE
         };
 
         // This loader will execute the ContentProviders query method on a background thread.

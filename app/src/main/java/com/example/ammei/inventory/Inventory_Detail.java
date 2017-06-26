@@ -9,8 +9,6 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,13 +31,9 @@ import android.widget.Toast;
 
 import com.example.ammei.inventory.Data.InventoryDbHelper;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-
 import static com.example.ammei.inventory.Data.InventoryContract.InventoryEntry;
 
-public class Inventory_Editor extends AppCompatActivity
+public class Inventory_Detail extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String LOG_TAG = InventoryEntry.class.getSimpleName();
@@ -122,6 +116,8 @@ public class Inventory_Editor extends AppCompatActivity
             return false;
         }
     };
+
+    private Uri mCurrentImageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -316,7 +312,11 @@ public class Inventory_Editor extends AppCompatActivity
         String quantityString = mQuantityOfBeer.getText().toString().trim();
         String priceString = mPriceOfBeer.getText().toString().trim();
         String descriptionString = mEnterDescription.getText().toString().trim();
-        String imageString = mImageView.toString();
+        String imageString = mCurrentImageUri.toString();
+        // Checking to ensure the image field is not null.
+        if (mCurrentImageUri != null) {
+            imageString = mCurrentImageUri.toString();
+        }
 
         // Create a ContentValues object where column names are the keys,
         // and recipe input fields from the editor activity are the values.
@@ -329,6 +329,7 @@ public class Inventory_Editor extends AppCompatActivity
         productValues.put(InventoryEntry.COLUMN_QUANTITY, quantityString);
         productValues.put(InventoryEntry.COLUMN_DESCRIPTION, descriptionString);
         productValues.put(InventoryEntry.COLUMN_IMAGE, imageString);
+
 
         // Will check to see if there is supposed to be a new beer product
         // and check if all the input fields in the editor are blank.
@@ -343,6 +344,7 @@ public class Inventory_Editor extends AppCompatActivity
                 && mBeerType == InventoryEntry.BT_UNKNOWN) {
             return;
         }
+
 
         // If the ABV of a particular beer product is not inputted by the user,
         // don't try to parse the string into an integer value. Use 0 as a default.
@@ -373,7 +375,6 @@ public class Inventory_Editor extends AppCompatActivity
 
         // If the beer ABV or "Alcohol by volume," is not provided by the user, don't try to
         // parse the string into an integer value. Use 0 as a default.
-
         if (mCurrentProductUri == null) {
             Uri newUri = getContentResolver().insert(InventoryEntry.CONTENT_URI, productValues);
 
@@ -450,7 +451,7 @@ public class Inventory_Editor extends AppCompatActivity
             case android.R.id.home:
                 if (mProductHasChanged) {
                     // Navigate back to parent activity (CatalogActivity)
-                    NavUtils.navigateUpFromSameTask(Inventory_Editor.this);
+                    NavUtils.navigateUpFromSameTask(Inventory_Detail.this);
                     return true;
 
                 }
@@ -462,7 +463,7 @@ public class Inventory_Editor extends AppCompatActivity
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int i) {
-                                NavUtils.navigateUpFromSameTask(Inventory_Editor.this);
+                                NavUtils.navigateUpFromSameTask(Inventory_Detail.this);
                             }
                         };
 
@@ -557,6 +558,9 @@ public class Inventory_Editor extends AppCompatActivity
             String beerDescription = cursor.getString(descriptionColumnIndex);
             String beerImage = cursor.getString(pictureColumnIndex);
 
+            // Uri to grab the correct image stored in the database with the applicable ID
+            mCurrentImageUri = Uri.parse(beerImage);
+
             //Update the views on the screen with the values from the database.
             mNameOfBeer.setText(beerName);
             mAlcoholByVolume.setText(Integer.toString(beerABV));
@@ -623,6 +627,7 @@ public class Inventory_Editor extends AppCompatActivity
         mPriceOfBeer.setText("");
         mQuantityOfBeer.setText("");
         mEnterDescription.setText("");
+        mImageView.toString();
 
     }
 
@@ -686,6 +691,7 @@ public class Inventory_Editor extends AppCompatActivity
      * Perform the deletion of a Product Entry from the database.
      */
     private void deleteProduct() {
+
         // Only performs the delete action if there is an existing beer product.
         if (mCurrentProductUri != null) {
             int rowsDeleted = getContentResolver().delete(mCurrentProductUri, null, null);
@@ -706,8 +712,6 @@ public class Inventory_Editor extends AppCompatActivity
 
 
     private void openImageSelector() {
-        mDbHelper = new InventoryDbHelper(this);
-        SQLiteDatabase database = mDbHelper.getWritableDatabase();
 
         Intent imageIntent;
 
@@ -730,63 +734,15 @@ public class Inventory_Editor extends AppCompatActivity
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
             if (resultData != null) {
-                mCurrentProductUri = resultData.getData();
-                Log.i(LOG_TAG, "Uri: " + mCurrentProductUri.toString());
+                mCurrentImageUri = resultData.getData();
+                Log.i(LOG_TAG, "Uri: " + mCurrentImageUri.toString());
 
-                mImageView.setImageBitmap(getBitmapFromUri(mCurrentProductUri));
+                mImageView.setImageURI(mCurrentImageUri);
 
             }
         } else if (requestCode == Activity.RESULT_OK) ;
     }
 
-    public Bitmap getBitmapFromUri(Uri uri) {
-        if (uri == null || uri.toString().isEmpty())
-            return null;
-
-        // Get the dimensions of the view
-        int targetWidth = mImageView.getWidth();
-        int targetHeight = mImageView.getHeight();
-
-        InputStream input = null;
-        try {
-            input = this.getContentResolver().openInputStream(uri);
-
-            // Get the dimensions of the bitmap.
-            BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-            bitmapOptions.inJustDecodeBounds = true;
-            BitmapFactory.decodeStream(input, null, bitmapOptions);
-            input.close();
-
-            int photoWidth = bitmapOptions.outWidth;
-            int photoHeigth = bitmapOptions.outHeight;
-
-            // Determine how much to scale down the image.
-            int scaleFactor = Math.min(photoWidth / targetWidth, photoHeigth / targetHeight);
-
-            // Decode the image file into a Bitmap sized to fill the View
-            bitmapOptions.inJustDecodeBounds = false;
-            bitmapOptions.inSampleSize = scaleFactor;
-            bitmapOptions.inPurgeable = true;
-
-            input = this.getContentResolver().openInputStream(uri);
-            Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
-            input.close();
-            return bitmap;
-
-        } catch (FileNotFoundException fne) {
-            Log.e(LOG_TAG, "FAILED to load image.", fne);
-            return null;
-        } catch (Exception e) {
-            Log.e(LOG_TAG, "FAILED to load image.", e);
-            return null;
-        } finally {
-            try {
-                input.close();
-            } catch (IOException ioe) {
-
-            }
-        }
-    }
 
     /**
      * Method to increase Quantity when "restock" button has been clicked by the user.

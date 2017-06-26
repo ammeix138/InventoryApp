@@ -27,7 +27,7 @@
     <string name="empty_title_text">Let\'s fill up that beer!</string>
 
     <!--Displays empty subtitle to user explaining how to get started when ListView is empty-->
-    <string name="empty_subtitle_text">Start by adding some beer to your inventory...</string>
+    <string name="empty_subtitle_text">Start by adding a product to your inventory...</string>
 
     <!--Displays app bar title to "Add a Product" when user is making new inventory entry-->
     <string name="app_bar_title_add_product">Add a Product</string>

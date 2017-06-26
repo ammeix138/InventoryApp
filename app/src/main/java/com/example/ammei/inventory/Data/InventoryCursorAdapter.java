@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CursorAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ammei.inventory.R;
@@ -23,21 +22,13 @@ import static com.example.ammei.inventory.Data.InventoryContract.InventoryEntry;
 
 public class InventoryCursorAdapter extends CursorAdapter {
 
-    private LayoutInflater cursorInflater;
-
+    private static final String LOG_TAG = InventoryEntry.class.getSimpleName();
     InventoryDbHelper mDbHelper;
 
     Button mRestock;
 
     Button mSold;
-
-    ImageView mImage;
-
-    private Cursor mCursor;
-
-    InventoryCursorAdapter cursorAdapter;
-
-    private static final String LOG_TAG = InventoryEntry.class.getSimpleName();
+    private LayoutInflater cursorInflater;
 
     public InventoryCursorAdapter(Context context, Cursor c) {
         super(context, c, 0 /*flags*/);

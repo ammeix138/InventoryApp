@@ -12,8 +12,8 @@
         android:background="#ECEFF1"
         android:orientation="vertical"
         android:padding="14dp"
-        tools:context="com.example.ammei.inventory.Inventory_Editor"
-        android:weightSum="1">
+        android:weightSum="1"
+        tools:context="com.example.ammei.inventory.Inventory_Detail">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -190,29 +190,29 @@
         </LinearLayout>
 
         <ImageView
-            android:layout_gravity="center"
             android:id="@+id/product_imageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/empty_beer"
-            android:scaleType="centerCrop"
-            android:textAlignment="center"
+            android:layout_gravity="center"
             android:layout_marginTop="4dp"
+            android:background="#f0eaea"
             android:focusable="false"
-            android:background="#f0eaea"/>
+            android:scaleType="centerCrop"
+            android:src="@drawable/empty_beer"
+            android:textAlignment="center" />
 
         <Button
             android:id="@+id/orderButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
             android:background="#a2ff720e"
             android:focusable="false"
             android:gravity="center"
+            android:padding="8dp"
             android:text="Submit Order"
-            android:layout_marginTop="8dp"
-            android:textColor="#ffffff"
-            android:layout_gravity="center"
-            android:padding="8dp"/>
+            android:textColor="#ffffff" />
 
     </LinearLayout>
 </ScrollView>

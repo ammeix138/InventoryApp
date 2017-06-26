@@ -7,7 +7,6 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import static com.example.ammei.inventory.Data.InventoryContract.CONTENT_AUTHORITY;
@@ -78,7 +77,7 @@ public class InventoryProvider extends ContentProvider {
                 selection = InventoryEntry._ID + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
 
-                // Performs actual query on the inventory table wher the _id equals 3 to
+                // Performs actual query on the inventory table where the _id equals 3 to
                 // return a cursor containing that row of the data.
                 cursor = database.query(InventoryEntry.TABLE_NAME, projection,
                         selection, selectionArgs, null, null, sortOrder);
@@ -107,7 +106,6 @@ public class InventoryProvider extends ContentProvider {
         }
     }
 
-    @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         final int match = sUriMatcher.match(uri);
@@ -200,7 +198,7 @@ public class InventoryProvider extends ContentProvider {
             case PRODUCT:
                 return updateProduct(uri, values, selection, selectionArgs);
             case PRODUCT_ID:
-                selection = InventoryEntry._ID + "-?";
+                selection = InventoryEntry._ID + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 return updateProduct(uri, values, selection, selectionArgs);
             default:
@@ -302,7 +300,7 @@ public class InventoryProvider extends ContentProvider {
                 break;
             case PRODUCT_ID:
                 // Delete a single row given by the ID in the URI.
-                selection = InventoryEntry._ID + "-?";
+                selection = InventoryEntry._ID + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 rowsDeleted = database.delete(InventoryEntry.TABLE_NAME, selection, selectionArgs);
                 break;
