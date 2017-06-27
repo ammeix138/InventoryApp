@@ -348,7 +348,30 @@ public class Inventory_Detail extends AppCompatActivity
             return;
         }
 
+        if (TextUtils.isEmpty(nameString)) {
+            Toast.makeText(this, "Please enter valid product name",
+                    Toast.LENGTH_SHORT).show();
+        }
 
+        if (TextUtils.isEmpty(abvString)) {
+            Toast.makeText(this, "Please enter valid product ABV",
+                    Toast.LENGTH_SHORT).show();
+        }
+
+        if (TextUtils.isEmpty(priceString)) {
+            Toast.makeText(this, "Please enter valid product price",
+                    Toast.LENGTH_SHORT).show();
+        }
+
+        if (TextUtils.isEmpty(quantityString)) {
+            Toast.makeText(this, "Please enter available quantity",
+                    Toast.LENGTH_SHORT).show();
+        }
+
+        if (TextUtils.isEmpty(descriptionString)) {
+            Toast.makeText(this, "Please enter valid product description",
+                    Toast.LENGTH_LONG).show();
+        }
         // If the ABV of a particular beer product is not inputted by the user,
         // don't try to parse the string into an integer value. Use 0 as a default.
         int productABV = 0;

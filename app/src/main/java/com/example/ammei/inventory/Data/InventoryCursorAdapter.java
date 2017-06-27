@@ -28,6 +28,7 @@ public class InventoryCursorAdapter extends CursorAdapter {
     Button mRestock;
 
     Button mSold;
+    
     private LayoutInflater cursorInflater;
 
     public InventoryCursorAdapter(Context context, Cursor c) {
@@ -73,7 +74,7 @@ public class InventoryCursorAdapter extends CursorAdapter {
                 long rowId = Long.valueOf(quantityView.getTag().toString());
                 String filter = "_ID=" + rowId;
                 int currentQuantity = Integer.valueOf(quantityView.getText().toString());
-                if (currentQuantity > 0) {
+                if (currentQuantity >= 0) {
                     mDbHelper = new InventoryDbHelper(context);
                     SQLiteDatabase database = mDbHelper.getWritableDatabase();
                     int restockNewQuantity = currentQuantity + 1;
@@ -93,7 +94,7 @@ public class InventoryCursorAdapter extends CursorAdapter {
                 long rowId = Long.valueOf(quantityView.getTag().toString());
                 String filter = "_ID=" + rowId;
                 int saleCurrentQuantity = Integer.valueOf(quantityView.getText().toString());
-                if (saleCurrentQuantity > 1) {
+                if (saleCurrentQuantity != 0) {
                     mDbHelper = new InventoryDbHelper(context);
                     SQLiteDatabase database = mDbHelper.getWritableDatabase();
                     int saleNewQuantity = saleCurrentQuantity - 1;
@@ -103,7 +104,7 @@ public class InventoryCursorAdapter extends CursorAdapter {
                     database.update(InventoryEntry.TABLE_NAME, newSaleValues, filter, null);
                     quantityView.setText(String.valueOf(saleNewQuantity));
                     database.close();
-                } else if (saleCurrentQuantity == 1) {
+                } else if (saleCurrentQuantity == 0) {
                     Log.i(LOG_TAG, "Button click works at 1");
                 }
             }
