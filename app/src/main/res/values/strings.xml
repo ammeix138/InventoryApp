@@ -2,7 +2,7 @@
     <string name="app_name">Inventory App</string>
     <string name="String_home">Home</string>
     <string name="action_save_recipes">Action Save</string>
-    <string name="delete_recipe">Delete Recipe</string>
+    <string name="delete_recipe">Delete Product</string>
 
     <!--Displays text for the possible beer colors-->
     <string name="color_unknown">Unknown</string>

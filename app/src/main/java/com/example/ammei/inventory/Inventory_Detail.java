@@ -315,8 +315,9 @@ public class Inventory_Detail extends AppCompatActivity
         String quantityString = mQuantityOfBeer.getText().toString().trim();
         String priceString = mPriceOfBeer.getText().toString().trim();
         String descriptionString = mEnterDescription.getText().toString().trim();
-        String imageString = mCurrentImageUri.toString();
+        String imageString = "";
         // Checking to ensure the image field is not null.
+
         if (mCurrentImageUri != null) {
             imageString = mCurrentImageUri.toString();
         }
@@ -371,6 +372,11 @@ public class Inventory_Detail extends AppCompatActivity
         if (TextUtils.isEmpty(descriptionString)) {
             Toast.makeText(this, "Please enter valid product description",
                     Toast.LENGTH_LONG).show();
+        }
+
+        if (TextUtils.isEmpty(imageString)) {
+            Toast.makeText(this, "Please add an image",
+                    Toast.LENGTH_SHORT).show();
         }
         // If the ABV of a particular beer product is not inputted by the user,
         // don't try to parse the string into an integer value. Use 0 as a default.
